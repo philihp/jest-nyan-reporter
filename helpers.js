@@ -1,15 +1,15 @@
-const useColors = require('supports-color');
-const tty = require('tty');
-const ms = require('./ms');
+const useColors = require('supports-color')
+const tty = require('tty')
+const ms = require('ms')
 
-const isatty = tty.isatty(1) && tty.isatty(2);
+const isatty = tty.isatty(1) && tty.isatty(2)
 
-const window = { width: 75 };
+const window = { width: 75 }
 
 if (isatty) {
   window.width = process.stdout.getWindowSize
     ? process.stdout.getWindowSize(1)[0]
-    : tty.getWindowSize()[1];
+    : tty.getWindowSize()[1]
 }
 
 const colors = {
@@ -33,7 +33,7 @@ const colors = {
   'diff gutter': 90,
   'diff added': 32,
   'diff removed': 31,
-};
+}
 
 const symbols = {
   ok: '✓',
@@ -41,37 +41,37 @@ const symbols = {
   dot: '․',
   comma: ',',
   bang: '!',
-};
+}
 
 if (process.platform === 'win32') {
-  symbols.ok = '\u221A';
-  symbols.err = '\u00D7';
-  symbols.dot = '.';
+  symbols.ok = '\u221A'
+  symbols.err = '\u00D7'
+  symbols.dot = '.'
 }
 
 const color = (type, str) => {
   if (!useColors) {
-    return String(str);
+    return String(str)
   }
 
-  const colorStr = '\u001b[' + colors[type] + 'm' + str + '\u001b[0m';
-  return colorStr;
-};
+  const colorStr = `\u001b[${colors[type]}m${str}\u001b[0m`
+  return colorStr
+}
 
 const cursor = {
   hide: () => isatty && process.stdout.write('\u001b[?25l'),
   show: () => isatty && process.stdout.write('\u001b[?25h'),
   deleteLine: () => isatty && process.stdout.write('\u001b[2K'),
   beginningOfLine: () => isatty && process.stdout.write('\u001b[0G'),
-  CR: function() {
+  CR() {
     if (isatty) {
-      this.deleteLine();
-      this.beginningOfLine();
+      this.deleteLine()
+      this.beginningOfLine()
     } else {
-      process.stdout.write('\r');
+      process.stdout.write('\r')
     }
   },
-};
+}
 
 const epilogue = ({
   numPassedTests,
@@ -80,58 +80,56 @@ const epilogue = ({
   numTotalTests,
   startTime,
 }) => {
-  const duration = Date.now() - startTime;
-  let fmt;
+  const duration = Date.now() - startTime
+  let fmt
 
-  console.log();
+  console.log()
 
-  fmt = color('total tests', '   %d total') +
-    color('light', ' (%s) ');
+  fmt = color('total tests', '   %d total') + color('light', ' (%s) ')
 
-  console.log(fmt, numTotalTests, ms(duration));
+  console.log(fmt, numTotalTests, ms(duration))
 
-  fmt = color('bright pass', `   ${symbols.ok}`) +
-    color('green', ' %d passing');
+  fmt = color('bright pass', `   ${symbols.ok}`) + color('green', ' %d passing')
 
-  console.log(fmt, numPassedTests || 0);
+  console.log(fmt, numPassedTests || 0)
 
   if (numFailedTests) {
-    fmt = color('fail', `   ${symbols.err} %d failing `);
-    console.log(fmt, numFailedTests);
+    fmt = color('fail', `   ${symbols.err} %d failing `)
+    console.log(fmt, numFailedTests)
   }
 
   if (numPendingTests) {
-    fmt = (color('pending', `   ${symbols.bang}`) + color('pending', ' %d pending'));
-    console.log(fmt, numPendingTests);
+    fmt =
+      color('pending', `   ${symbols.bang}`) + color('pending', ' %d pending')
+    console.log(fmt, numPendingTests)
   }
 
-  console.log();
+  console.log()
 
   if (numTotalTests && numTotalTests === numPassedTests) {
-    console.log(color('bright pass', `   ${symbols.ok}  All Tests Passed`));
+    console.log(color('bright pass', `   ${symbols.ok}  All Tests Passed`))
   }
-};
+}
 
 /**
  * Prints failure messsages for the reporters to be displayed
  */
 function printFailureMessages(results) {
   if (!results.numTotalTests || !results.numFailedTests) {
-    return;
+    return
   }
 
-  console.log(color('bright fail', `  ${symbols.err} Failed Tests:`));
-  console.log('\n');
+  console.log(color('bright fail', `  ${symbols.err} Failed Tests:`))
+  console.log('\n')
 
-  results.testResults.forEach(({failureMessage}) => {
+  results.testResults.forEach(({ failureMessage }) => {
     if (failureMessage) {
-      console.log(failureMessage);
+      console.log(failureMessage)
     }
-  });
+  })
 
-  process.stdout.write('\n');
+  process.stdout.write('\n')
 }
-
 
 module.exports = {
   cursor,
@@ -143,4 +141,4 @@ module.exports = {
   epilogue,
   isatty,
   useColors,
-};
+}

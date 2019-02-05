@@ -1,3 +1,13 @@
 {
-    "extends": "fbjs/strict"
+  "extends": ["airbnb", "plugin:prettier/recommended"],
+  "rules": {
+    "no-multi-assign": 1,
+    "no-plusplus": 1,
+    "class-methods-use-this": 1,
+    "no-shadow": 1
+  },
+  "env": {
+    "es6": true
+  },
+  "parser": "babel-eslint"
 }

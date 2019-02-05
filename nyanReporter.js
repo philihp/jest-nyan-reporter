@@ -5,13 +5,11 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  */
-const helpers = require('./helpers');
+const helpers = require('./helpers')
 
-const cursor = helpers.cursor;
-const color = helpers.color;
-const window = helpers.window;
+const { cursor, color, window } = helpers
 
-const write = (string) => process.stdout.write(string);
+const write = string => process.stdout.write(string)
 
 class NyanReporter {
   /**
@@ -31,47 +29,47 @@ class NyanReporter {
    * @constructor
    */
   constructor(options = {}) {
-    var nyanCatWidth = this.nyanCatWidth = 11;
-    var width = window.width * 0.75 || 0;
+    const nyanCatWidth = (this.nyanCatWidth = 11)
+    const width = window.width * 0.75 || 0
 
-    this.colorIndex = 0;
-    this.numberOfLines = 4;
-    this.rainbowColors = this.generateColors();
-    this.scoreboardWidth = 5;
-    this.tick = 0;
-    this.trajectories = [[], [], [], []];
-    this.trajectoryWidthMax = width - nyanCatWidth;
+    this.colorIndex = 0
+    this.numberOfLines = 4
+    this.rainbowColors = this.generateColors()
+    this.scoreboardWidth = 5
+    this.tick = 0
+    this.trajectories = [[], [], [], []]
+    this.trajectoryWidthMax = width - nyanCatWidth
 
-    this.suppressErrorReporter = options.suppressErrorReporter || false;
-    this.renderOnRunCompletely = options.renderOnRunCompletely || false;
+    this.suppressErrorReporter = options.suppressErrorReporter || false
+    this.renderOnRunCompletely = options.renderOnRunCompletely || false
   }
 
   onRunStart(config, results) {
-    cursor.CR();
-    cursor.hide();
+    cursor.CR()
+    cursor.hide()
 
     if (!this.renderOnRunCompletely) {
-      this.draw(results);
+      this.draw(results)
     }
   }
 
   onTestResult(config, result, results) {
     if (!this.renderOnRunCompletely) {
-      this.draw(results);
+      this.draw(results)
     }
   }
 
   onRunComplete(config, results) {
-    this.draw(results);
-    cursor.show();
-    for (var i = 0; i < this.numberOfLines; i++) {
-      write('\n');
+    this.draw(results)
+    cursor.show()
+    for (let i = 0; i < this.numberOfLines; i++) {
+      write('\n')
     }
 
-    helpers.epilogue(results);
+    helpers.epilogue(results)
 
     if (!this.suppressErrorReporter) {
-      helpers.printFailureMessages(results);
+      helpers.printFailureMessages(results)
     }
   }
 
@@ -82,39 +80,39 @@ class NyanReporter {
    * @return {Array}
    */
   generateColors() {
-    var colors = [];
-    for (var i = 0; i < (6 * 7); i++) {
-      var pi3 = Math.floor(Math.PI / 3);
-      var n = (i * (1.0 / 6));
-      var r = Math.floor(3 * Math.sin(n) + 3);
-      var g = Math.floor(3 * Math.sin(n + 2 * pi3) + 3);
-      var b = Math.floor(3 * Math.sin(n + 4 * pi3) + 3);
-      colors.push(36 * r + 6 * g + b + 16);
+    const colors = []
+    for (let i = 0; i < 6 * 7; i++) {
+      const pi3 = Math.floor(Math.PI / 3)
+      const n = i * (1.0 / 6)
+      const r = Math.floor(3 * Math.sin(n) + 3)
+      const g = Math.floor(3 * Math.sin(n + 2 * pi3) + 3)
+      const b = Math.floor(3 * Math.sin(n + 4 * pi3) + 3)
+      colors.push(36 * r + 6 * g + b + 16)
     }
-    return colors;
+    return colors
   }
 
   drawScoreboard({
-      numPassedTests,
-      numFailedTests,
-      numPendingTests,
-      numTotalTests,
-    }) {
-    this.drawType('total tests', numTotalTests || 0);
-    this.drawType('green', numPassedTests || 0);
-    this.drawType('fail', numFailedTests || 0);
-    this.drawType('pending', numPendingTests || 0);
+    numPassedTests,
+    numFailedTests,
+    numPendingTests,
+    numTotalTests,
+  }) {
+    this.drawType('total tests', numTotalTests || 0)
+    this.drawType('green', numPassedTests || 0)
+    this.drawType('fail', numFailedTests || 0)
+    this.drawType('pending', numPendingTests || 0)
 
-    this.cursorUp(this.numberOfLines);
+    this.cursorUp(this.numberOfLines)
   }
 
   /**
    * Draws the type of stat along with a color
    */
   drawType(type, n) {
-    write(' ');
-    write(color(type, n));
-    write('\n');
+    write(' ')
+    write(color(type, n))
+    write('\n')
   }
 
   /**
@@ -125,15 +123,15 @@ class NyanReporter {
    * @return {string}
    */
   appendRainbow() {
-    var segment = this.tick ? '_' : '-';
-    var rainbowified = this.rainbowify(segment);
+    const segment = this.tick ? '_' : '-'
+    const rainbowified = this.rainbowify(segment)
 
-    for (var index = 0; index < this.numberOfLines; index++) {
-      var trajectory = this.trajectories[index];
+    for (let index = 0; index < this.numberOfLines; index++) {
+      const trajectory = this.trajectories[index]
       if (trajectory.length >= this.trajectoryWidthMax) {
-        trajectory.shift();
+        trajectory.shift()
       }
-      trajectory.push(rainbowified);
+      trajectory.push(rainbowified)
     }
   }
 
@@ -141,12 +139,12 @@ class NyanReporter {
    * Main draw function to draw the output of the reporter
    */
   draw(results = {}) {
-    this.appendRainbow();
-    this.drawScoreboard(results);
-    this.drawRainbow();
-    this.drawNyanCat(results);
+    this.appendRainbow()
+    this.drawScoreboard(results)
+    this.drawRainbow()
+    this.drawNyanCat(results)
 
-    this.tick = !this.tick;
+    this.tick = !this.tick
   }
 
   /**
@@ -155,66 +153,70 @@ class NyanReporter {
    * @private
    */
   drawNyanCat(results) {
-    var self = this;
-    var startWidth = this.scoreboardWidth + this.trajectories[0].length;
-    var dist = '\u001b[' + startWidth + 'C';
-    var padding = '';
+    const self = this
+    const startWidth = this.scoreboardWidth + this.trajectories[0].length
+    const dist = `\u001b[${startWidth}C`
+    let padding = ''
 
-    write(dist);
-    write('_,------,');
-    write('\n');
+    write(dist)
+    write('_,------,')
+    write('\n')
 
-    write(dist);
-    padding = self.tick ? '  ' : '   ';
-    write('_|' + padding + '/\\_/\\ ');
-    write('\n');
+    write(dist)
+    padding = self.tick ? '  ' : '   '
+    write(`_|${padding}/\\_/\\ `)
+    write('\n')
 
-    write(dist);
-    padding = self.tick ? '_' : '__';
-    var tail = self.tick ? '~' : '^';
-    write(tail + '|' + padding + this.face(results) + ' ');
-    write('\n');
+    write(dist)
+    padding = self.tick ? '_' : '__'
+    const tail = self.tick ? '~' : '^'
+    write(`${tail}|${padding}${this.face(results)} `)
+    write('\n')
 
-    write(dist);
-    padding = self.tick ? ' ' : '  ';
-    write(padding + '""  "" ');
-    write('\n');
+    write(dist)
+    padding = self.tick ? ' ' : '  '
+    write(`${padding}""  "" `)
+    write('\n')
 
-    this.cursorUp(this.numberOfLines);
+    this.cursorUp(this.numberOfLines)
   }
 
   face(results) {
     if (results.numFailedTests) {
-      return '( x .x)';
-    } else if (results.numPendingTests) {
-      return '( o .o)';
-    } else if (results.numPassedTests) {
-      return '( ^ .^)';
+      return '( x .x)'
     }
-    return '( - .-)';
+    if (results.numPendingTests) {
+      return '( o .o)'
+    }
+    if (results.numPassedTests) {
+      return '( ^ .^)'
+    }
+    return '( - .-)'
   }
 
   /**
    * Draw the rainbow
    */
   drawRainbow() {
-    this.trajectories.forEach((line) => {
-      write('\u001b[' + this.scoreboardWidth + 'C');
-      write(line.join(''));
-      write('\n');
-    });
+    this.trajectories.forEach(line => {
+      write(`\u001b[${this.scoreboardWidth}C`)
+      write(line.join(''))
+      write('\n')
+    })
 
-    this.cursorUp(this.numberOfLines);
+    this.cursorUp(this.numberOfLines)
   }
 
   rainbowify(str) {
     if (!helpers.useColors) {
-      return str;
+      return str
     }
 
-    const color = this.rainbowColors[this.colorIndex % this.rainbowColors.length];
-    this.colorIndex += 1;
-    return '\u001b[38;5;' + color + 'm' + str + '\u001b[0m';
+    const color = this.rainbowColors[
+      this.colorIndex % this.rainbowColors.length
+    ]
+    this.colorIndex += 1
+    return `\u001b[38;5;${color}m${str}\u001b[0m`
   }
 
   /**
@@ -224,15 +226,15 @@ class NyanReporter {
    * @param {number} n
    */
   cursorUp(n) {
-    write('\u001b[' + n + 'A');
+    write(`\u001b[${n}A`)
   }
 
   /**
    * Move cursor down `n`
    */
   cursorDown(n) {
-    write('\u001b[' + n + 'B');
+    write(`\u001b[${n}B`)
   }
 }
 
-module.exports = NyanReporter;
+module.exports = NyanReporter
