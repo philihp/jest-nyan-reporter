@@ -1,49 +1,46 @@
-# jest-nyan-reporter
+# jest-nyancat-reporter
 
 <!--Badges Start-->
-[![npm version](https://badge.fury.io/js/jest-nyan-reporter.svg)](https://badge.fury.io/js/jest-nyan-reporter)
+
+[![npm version](https://badge.fury.io/js/jest-nyancat-reporter.svg)](https://badge.fury.io/js/jest-nyancat-reporter)
+
 <!--Badges End-->
 
+This was forked from [abdulhannanali/jest-nyan-reporter](https://github.com/abdulhannanali/jest-nyan-reporter), which has a bug reported in 2017, and a PR submitted but still hasn't been merged. I'm taking that to mean that the original repo is abandoned.
 
-Nyan Cat style Custom Reporter for Jest, heavily based on Mocha's fabulous
-[Nyan reporter](https://github.com/mochajs/mocha/blob/master/lib/reporters/nyan.js).
-
-![Jest Nyan Reporter Image](https://i.imgur.com/i9BHK8k.png)
+![Jest Nyan Reporter Image](https://i.imgur.com/oPawvXV.png)
 
 ## Installation
 
 You can install by typing the following command in terminal.
 
 For **Yarn**
+
 ```
-yarn add -D jest-nyan-reporter
+yarn add -D jest-nyancat-reporter
 ```
 
 For **NPM**
+
 ```
-npm --save-dev jest-nyan-reporter
+npm --save-dev jest-nyancat-reporter
 ```
 
-### Configure them for your tests
+### Configure
 
-*Note: The configuration pattern for the Jest Testing Framework is experimental and can change in the future, depending on the community's decision. This is a very initial version of the configuration file*
-
-In order to configure the Nyan Reporter, you can add the following configuration in your `package.json` under jest property.
+In order to configure the Nyancat Reporter, you can add the following configuration in your `package.json` under jest property.
 
 ```json
 {
   "jest": {
-  "reporters": [
-      ["jest-nyan-reporter", {
-        "suppressErrorReporter": false
-      }]
+    "reporters": [
+      [
+        "jest-nyancat-reporter",
+        {
+          "suppressErrorReporter": false
+        }
+      ]
     ]
   }
 }
 ```
-
-**CLI Option to add Reporters is not available currently but maybe in the future**
-
-#### LICENSE
-
-MIT LICENSE. See [LICENSE](LICENSE) for more details. :heart:
