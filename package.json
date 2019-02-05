@@ -1,10 +1,13 @@
 {
-  "name": "jest-nyan-reporter",
-  "version": "1.0.3",
+  "name": "jest-nyancat-reporter",
+  "version": "1.0.4",
   "main": "index.js",
   "jest": {
     "reporters": [
-      ["<rootDir>/nyanReporter.js", {}]
+      [
+        "<rootDir>/nyanReporter.js",
+        {}
+      ]
     ]
   },
   "dependencies": {
@@ -12,7 +15,7 @@
     "supports-color": "^3.2.3"
   },
   "repository": {
-    "url": "https://github.com/abdulhannanali/jest-nyan-reporter",
+    "url": "https://github.com/philihp/jest-nyancat-reporter",
     "type": "git"
   },
   "devDependencies": {
