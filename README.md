@@ -23,7 +23,7 @@ yarn add -D jest-nyancat-reporter
 For **NPM**
 
 ```
-npm --save-dev jest-nyancat-reporter
+npm install --save-dev jest-nyancat-reporter
 ```
 
 ### Configure
