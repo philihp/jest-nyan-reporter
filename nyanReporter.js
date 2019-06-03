@@ -80,14 +80,14 @@ class NyanReporter {
    * @return {Array}
    */
   generateColors() {
-    const colors = []
+    const colors = new Array(6)
     for (let i = 0; i < 6 * 7; i++) {
       const pi3 = Math.floor(Math.PI / 3)
       const n = i * (1.0 / 6)
       const r = Math.floor(3 * Math.sin(n) + 3)
       const g = Math.floor(3 * Math.sin(n + 2 * pi3) + 3)
       const b = Math.floor(3 * Math.sin(n + 4 * pi3) + 3)
-      colors.push(36 * r + 6 * g + b + 16)
+      colors[i] = 36 * r + 6 * g + b + 16
     }
     return colors
   }
