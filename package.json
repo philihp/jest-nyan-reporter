@@ -30,7 +30,7 @@
     "eslint-plugin-react": "^7.13.0",
     "husky": "^4.0.0",
     "lint-staged": "^10.0.8",
-    "prettier": "^1.17.1"
+    "prettier": "^2.0.1"
   },
   "hooks": {
     "pre-commit": "lint-staged"
